@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="" content="">
+  <style type="text/css" media="all">
+    * {
+      padding: 0;
+      margin: 0;
+    }
+  </style>
+  <script src="p5/p5.js" type="text/javascript" charset="utf-8"></script>
+  <title>Ray</title>
+</head>
+<body>
+  <script type="text/javascript" charset="utf-8">
+    var ar = [];
+    function setup() {
+      createCanvas(800, 900);
+      for (var i = 0; i < l; i++) {
+        var ar1 = [random(50, 750),
+          random(50, 750),
+          random(50, 750),
+          random(50, 750)];
+        ar.push(ar1);
+      }
+    }
+    var pi = Math.PI,
+    n = 200,
+    l = 3;
+    function li(a, c) {
+      var x3 = c[0],
+        y3 = c[1],
+        x4 = c[2],
+        y4 = c[3],
+        px = x4,
+        py = y4;
+      for (var i = 0; i < l; i++) {
+        var x1 = a[i][0],
+        y1 = a[i][1],
+        x2 = a[i][2],
+        y2 = a[i][3];
+        var den = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+        if (den != 0) {
+
+          var t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / den;
+          var u = -((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / den;
+          if (t > 0 && t < 1 && u > 0) {
+            var ty = y1 + t * (y2 - y1);
+            var tx = x1 + t * (x2 - x1);
+            var td=Math.pow(
+              Math.pow(tx-mouseX,2)+
+              Math.pow(ty-mouseY,2),
+              0.5);
+            var pd=Math.pow(
+              Math.pow(px-mouseX,2)+
+              Math.pow(py-mouseY,2),
+              0.5);
+            if(td<pd){
+              px=tx;
+              py=ty;
+            }
+          }
+        }
+      }
+      line(mouseX, mouseY, px, py);
+    }
+
+    function draw() {
+      background(0);
+      strokeWeight(6);
+      stroke(255);
+      for (var i = 0; i < l; i++) {
+        line(ar[i][0], ar[i][1], ar[i][2], ar[i][3]);
+      }
+      strokeWeight(60);
+      stroke(255);
+      point(mouseX, mouseY);
+      strokeWeight(1);
+      stroke(255, 255, 255);
+      for (var i = 0; i < n; i++) {
+        var co = new Array(4);
+        co[0] = mouseX;
+        co[1] = mouseY;
+        co[2] = 1600*Math.cos(2*pi*i/n)+mouseX;
+        co[3] = 1600*Math.sin(2*pi*i/n)+mouseY;
+        li(ar, co);
+      }
+    }
+  </script>
+</body>
+</html>
